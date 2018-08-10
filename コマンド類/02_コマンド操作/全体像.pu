@@ -1,0 +1,29 @@
+@startuml
+actor user
+participant Docker
+participant container
+box "Local PC" #f66
+  participant Docker
+  participant image_l
+  participant container
+end box
+box "Docker Index" #66f
+  participant image_r
+end box
+== pull ==
+user -> Docker : docker pull [image]
+Docker -> image_r : search
+image_l <- image_r : download
+== run ==
+user -> Docker : docker run [image]
+Docker -> image_l
+image_l -> container : create
+== commit ==
+user -> Docker : docker commit [container]
+Docker -> container
+image_l <- container : create
+== push ==
+user -> Docker : push
+Docker -> image_l
+image_l -> image_r : 反映
+@enduml
